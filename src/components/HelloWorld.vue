@@ -186,6 +186,14 @@ export default {
       prize_amount: 0,
       prize_rate: 0,
     },
+    saveTempItem: {
+      _id: '',
+      createdAt: 0,
+      updatedAt: 0,
+      prize_name: 0,
+      prize_amount: 0,
+      prize_rate: 0,
+    },
   }),
 
   computed: {
@@ -230,8 +238,10 @@ export default {
 
     editItem (item) {
       console.log("editItem");
+      // console.log(item);
       this.editedIndex = this.prizes.indexOf(item)
       this.editedItem = Object.assign({}, item)
+      this.saveTempItem = Object.assign({}, item)
       this.dialog = true
     },
 
@@ -271,10 +281,22 @@ export default {
 
     save () {
       console.log("save");
+      // console.log(this.editedItem);
+      // console.log(this.saveTempItem);
+      // console.log(this.editedItem.prize_name);
+      // console.log(this.saveTempItem.prize_name);
+      // console.log(this.defaultItem);
       // updatePrize(this.editedItem._id,this.editedItem.prize_name,this.editedItem.prize_amount,this.editedItem.prize_rate);
       if (this.editedIndex > -1) {
-        updatePrize(this.editedItem._id,this.editedItem.prize_name,this.editedItem.prize_amount,this.editedItem.prize_rate);
-        Object.assign(this.prizes[this.editedIndex], this.editedItem)
+        if(this.editedItem.prize_name===this.saveTempItem.prize_name
+          &&this.editedItem.prize_amount===this.saveTempItem.prize_amount
+          // eslint-disable-next-line no-empty
+          &&this.editedItem.prize_rate===this.saveTempItem.prize_rate){
+          }
+          else{
+            updatePrize(this.editedItem._id,this.editedItem.prize_name,this.editedItem.prize_amount,this.editedItem.prize_rate);
+            Object.assign(this.prizes[this.editedIndex], this.editedItem)
+          }
       } else {
         insertPrize(this.editedItem.prize_name,this.editedItem.prize_amount,this.editedItem.prize_rate);
         this.prizes.push(this.editedItem);
